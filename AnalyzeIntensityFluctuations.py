@@ -4,10 +4,13 @@ from astropy.io import fits
 from pathlib import Path
 from scipy.ndimage import shift
 
+#USER INPUTS________________________________________________________________________________________
+
 level2_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\CMEWATCH\July18th\10sExposures\Level2Data")
 date='July18th'
 exposure_time='10'
 
+#___________________________________________________________________________________________________
 
 level2_files=sorted(level2_folder.glob("*.fits*"))
 cube = np.array(np.memmap(rf"{level2_folder}\{date}_{exposure_time}_level2.dat",dtype=np.float32,mode='r',shape=(len(level2_files),2048,2048)))
