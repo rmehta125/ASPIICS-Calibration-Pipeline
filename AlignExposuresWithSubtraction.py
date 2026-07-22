@@ -4,9 +4,14 @@ from astropy.io import fits
 from scipy.ndimage import shift
 from pathlib import Path
 
-shift_direction='yshift'
+#USER INPUTS _______________________________________________________________________________________
 
+shift_direction='yshift'
 folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\CMEWATCH\July18th\1sExposures\Level2Data")
+
+#___________________________________________________________________________________________________
+
+
 files = sorted(folder.glob("*.fits*"))
 
 image0=fits.getdata(files[0])
