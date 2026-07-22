@@ -4,11 +4,15 @@ from astropy.io import fits
 from pathlib import Path
 plt.style.use('dark_background')
 
+#USER INPUTS________________________________________________________________________________________
+
 level2_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October8th\1sExposures\Level2Data")
 date='October8th'
 cadence=5
 exposure_time=1
 pixel = [1724,1531]
+
+#___________________________________________________________________________________________________
 
 level2_files=sorted(level2_folder.glob("*.fits*"))
 cube=np.array(np.memmap(rf'{level2_folder}\{date}_{exposure_time}_level2.dat',dtype=np.float32,mode='r',shape=(len(level2_files),2048,2048)))
