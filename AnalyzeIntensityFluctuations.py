@@ -6,10 +6,14 @@ from scipy.ndimage import shift
 from astropy.wcs import WCS
 from scipy.ndimage import rotate
 
+#USER INPUTS _________________________________________________________________________________________________
+
 level2_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\1sExposures\Level2Data")
 level3_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\MergedExposures\Level3Data")
 date='October2nd'
 exposure_time='1'
+
+#_____________________________________________________________________________________________________________
 
 level2_files=sorted(level2_folder.glob("*.fits*"))
 cube = np.array(np.memmap(rf"{level2_folder}\{date}_{exposure_time}_level2.dat",dtype=np.float32,mode='r',shape=(len(level2_files),2048,2048)))
