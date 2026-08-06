@@ -39,10 +39,10 @@ yshift=sun_y-1023.5
 
 mean_I=np.nanmean(cube_level3,axis=0)
 rotation_angle=fits.getheader(file0)['CROTA']
-mean_I=rotate(mean_I,angle=rotation_angle,reshape=False,cval=np.nan,order=0)
-DeltaI = np.nanstd(cube, axis=0)
+mean_I=rotate(mean_I,angle=rotation_angle,reshape=False,cval=np.nan,order=0)    #DE-ROTATE THE LEVEL 3 IMAGES TO ALIGN WITH THE FLUCTUATIONS MAP
+DeltaI = np.nanstd(cube, axis=0)    
 DeltaI_Calibrated = np.sqrt(DeltaI**2-ShotNoise**2)
-DeltaI_Calibrated = shift(DeltaI_Calibrated,shift=(-yshift-10,-xshift-10),order=0,mode='constant',cval=np.nan)
+DeltaI_Calibrated = shift(DeltaI_Calibrated,shift=(-yshift-10,-xshift-10),order=0,mode='constant',cval=np.nan)    #ALIGN FLUCTUATIONS MAP TO THE LEVEL 3 IMAGES
 DeltaIoverI = DeltaI_Calibrated / mean_I
 
 plt.figure(figsize=(7,7))
