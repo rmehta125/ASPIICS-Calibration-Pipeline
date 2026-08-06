@@ -6,10 +6,13 @@ from scipy.ndimage import rotate
 from astropy.wcs import WCS
 from matplotlib.colors import ListedColormap
 
+# USER INPUTS ____________________________________________________________________________________________________
+
 level2_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\1sExposures\Level2Data")
 date='October2nd'
 exposure_time='1'
 
+# ________________________________________________________________________________________________________________
 
 level2_files=sorted(level2_folder.glob("*.fits*"))
 fluctuations = np.array(np.memmap(rf"{level2_folder}\{date}_{exposure_time}_fluctuations.dat",dtype=np.float32,mode='r',shape=(2048,2048)))
@@ -60,52 +63,9 @@ occulter_x=np.mean(occulter_x_positions)-xshift
 occulter_y=np.mean(occulter_y_positions)-yshift
 occulter_x,occulter_y=rotate_point((1023.5,1023.5),(occulter_x,occulter_y),rotation_angle)
 
-
-
 plt.style.use('dark_background')
 fig,ax=plt.subplots(figsize=(8,7))
-
-
-
-
-'''cmap = plt.colormaps["turbo"]
-
-# Nonlinear sampling
-x = np.linspace(0, 0.62, 256)
-
-# Example: gamma > 1 emphasizes darker colors
-new_colors = cmap(x**1)
-
-new_cmap = ListedColormap(new_colors)'''
-
-
-cmap = plt.colormaps["magma"]
-
-# Nonlinear sampling
-x = np.linspace(0, 1, 256)
-
-# Example: gamma > 1 emphasizes darker colors
-new_colors = cmap(x**0.8)
-
-new_cmap = ListedColormap(new_colors)
-
-
-im=ax.imshow(fluctuations,cmap=new_cmap,origin='lower',vmin=0,vmax=0.3)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+im=ax.imshow(fluctuations,cmap='magma',origin='lower',vmin=0,vmax=0.3)
 
 
 
@@ -117,8 +77,6 @@ occulter_radius=390
 occulter = plt.Circle((occulter_x,occulter_y), radius=occulter_radius, fill=True, color='black')
 occulter_outline = plt.Circle((occulter_x,occulter_y), radius=occulter_radius, fill=False, color='lightsteelblue', linewidth=0.5)
 sun_circle = plt.Circle((1023.5, 1023.5), radius=(RSUN_ARC)/CDELT1, color='lightsteelblue',fill=False,linewidth=0.5,ls=(0,(5,10)))
-#ax.add_patch(occulter)
-#ax.add_patch(occulter_outline)
 ax.add_patch(sun_circle)
 
 theta_ticks=[0,30,60,120,150]
@@ -203,8 +161,6 @@ occulter_radius=390
 occulter = plt.Circle((occulter_x,occulter_y), radius=occulter_radius, fill=True, color='black')
 occulter_outline = plt.Circle((occulter_x,occulter_y), radius=occulter_radius, fill=False, color='lightsteelblue', linewidth=0.5)
 sun_circle = plt.Circle((1023.5, 1023.5), radius=(RSUN_ARC)/CDELT1, color='lightsteelblue',fill=False,linewidth=0.5,ls=(0,(5,10)))
-#ax2.add_patch(occulter)
-#ax2.add_patch(occulter_outline)
 ax2.add_patch(sun_circle)
 ax2.set_xlim(0,2048)
 ax2.set_ylim(0,2048)
