@@ -40,11 +40,9 @@ yshift=sun_y-1023.5
 mean_I=np.nanmean(cube_level3,axis=0)
 rotation_angle=fits.getheader(file0)['CROTA']
 mean_I=rotate(mean_I,angle=rotation_angle,reshape=False,cval=np.nan,order=0)
-#mean_I=shift(mean_I,shift=(0,-20),order=0,mode='constant',cval=np.nan)
 DeltaI = np.nanstd(cube, axis=0)
 DeltaI_Calibrated = np.sqrt(DeltaI**2-ShotNoise**2)
 DeltaI_Calibrated = shift(DeltaI_Calibrated,shift=(-yshift-10,-xshift-10),order=0,mode='constant',cval=np.nan)
-#DeltaI_Calibrated = rotate(DeltaI_Calibrated,angle=-rotation_angle,reshape=False,cval=np.nan,order=0)
 DeltaIoverI = DeltaI_Calibrated / mean_I
 
 plt.figure(figsize=(7,7))
@@ -52,8 +50,6 @@ plt.imshow(mean_I,origin='lower',cmap='magma')
 plt.imshow(DeltaI_Calibrated,origin='lower',cmap='viridis')
 plt.show()
 
-
-#EDIT THIS SECTION ONCE YOU FIGURE OUT THE SHIFTING
 
 file0=level2_files[0]
 image_data=fits.getdata(file0)
@@ -65,7 +61,6 @@ xshift=sun_x-1023.5
 yshift=sun_y-1023.5
 CDELT1=header['CDELT1']
 solarradius=header['RSUN_ARC']
-#DeltaIoverI=shift(DeltaIoverI,shift=(-yshift,-xshift),order=0,mode='constant',cval=np.nan)
 
 smallestshell=(1.25*solarradius)/CDELT1
 shells=np.linspace(smallestshell,1000,61)
@@ -90,7 +85,6 @@ for j in range(len(shells[:-1])):
     shotnoise_in = ShotNoise[mask]
     measuredfluctuations_in = DeltaI[mask]
 
-    #fluctuationvalues.append(np.nanmean(DeltaIoverI_in))
     fluctuationvalues.append(np.nanmedian(DeltaIoverI_in))
 
 shells=np.linspace(int(smallestshell),1000,60)
@@ -115,8 +109,6 @@ fluctuations=np.memmap(rf'{level2_folder}\{date}_{exposure_time}_fluctuations.da
 fluctuations[:]=DeltaIoverI
 fluctuations.flush()
 
-#print(np.array(fluctuationvalues).tolist())
-print(np.array(shells).tolist())
 
 
 plt.show()
