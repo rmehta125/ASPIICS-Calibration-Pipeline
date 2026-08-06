@@ -3,11 +3,15 @@ import numpy as np
 from pathlib import Path
 from astropy.io import fits
 
+#USER INPUTS _______________________________________________________________________________________________________
+
 level1_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\1sExposures\Level1Data")
 level2_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\1sExposures\Level2Data")
 calibration_folder = Path(r"D:\2026\CalibrationData\release\calibration_data_20241205000000")
 date='October2nd'
 exposure_time='1'
+
+# __________________________________________________________________________________________________________________
 
 level1_files=sorted(level1_folder.glob("*.fits*"))
 level1_cube = np.memmap(rf'{level1_folder}\{date}_{exposure_time}_level1.dat',dtype=np.float32,mode='r',shape=(len(level1_files),2048,2048))
@@ -42,12 +46,6 @@ ShotNoise_photon_dark_DN = ShotNoise_photon_dark * Gain
 ShotNoise_DN = np.sqrt(ShotNoise_photon_dark_DN**2+readout**2)
 ShotNoise_MSB = (ShotNoise_DN / Exptime) * Conversion**-1
 
-#testing old method
-'''contributing_data=np.nanmean(np.array(level2_cube),axis=0)
-ShotNoise_MSB = np.sqrt((contributing_data * Gain)/(Conversion*Exptime))
-readout=(readout/Exptime)*Conversion**-1
-ShotNoise_MSB = np.sqrt(ShotNoise_MSB**2+readout**2)'''
-
 shotnoise[:]=ShotNoise_MSB
 shotnoise.flush()
 
@@ -59,55 +57,3 @@ colorbar.set_label('MSB')
 plt.xlabel('X Pixel')
 plt.ylabel('Y Pixel')
 plt.show()
-
-
-'''shells=np.linspace(450,1000,50)
-ny, nx = DeltaIoverI.shape
-y, x = np.indices((ny, nx))
-xc = 1023.5
-yc = 1023.5
-x = x - xc
-y = y - yc
-r = np.sqrt(x**2 + y**2)
-theta = np.arctan2(y, x)
-fluctuationvalues=[]
-intensityvalues=[]
-shotnoisevalues=[]
-measuredfluctuationvalues=[]
-
-for j in range(len(shells[:-1])):
-
-    inner = shells[j]
-    outer = shells[j+1]
-    mask = (r >= inner) & (r < outer)
-
-    DeltaIoverI_in = DeltaIoverI[mask]
-    mean_I_in = mean_I[mask]
-    shotnoise_in = ShotNoise[mask]
-    measuredfluctuations_in = DeltaI[mask]
-
-    fluctuationvalues.append(np.nanmean(DeltaIoverI_in))
-    intensityvalues.append(np.nanmean(mean_I_in))
-    shotnoisevalues.append(np.nanmean(shotnoise_in))
-    measuredfluctuationvalues.append(np.nanmean(measuredfluctuations_in))
-
-gradient=np.gradient(intensityvalues,shells[:-1])
-shiftingnoise=np.abs(gradient*(1/np.sqrt(2)))
-
-#Noise Sources
-
-shells=np.linspace(450,1000,49)
-plt.style.use('default')
-plt.figure(figsize=(6,4))
-plt.xlabel('Pixel')
-plt.ylabel(r'$\Delta I$')
-
-plt.plot(shells,measuredfluctuationvalues,color='blue',label='Measured fluctuations')
-plt.plot(shells,shiftingnoise,color='red',label='Misalignment noise',ls='--')
-plt.plot(shells,shotnoisevalues,color='green',label='Shot noise')
-plt.plot(shells,readoutnoise_MSB_array,color='orange',label='Read-out Noise')
-plt.plot(shells,darkcurrent_noise_MSB_array,color='purple',label='Dark current noise')
-plt.title('Measured Fluctuations and Noise Sources as a Function of Height')
-plt.legend()
-
-plt.show()'''
