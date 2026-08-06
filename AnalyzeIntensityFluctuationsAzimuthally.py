@@ -7,22 +7,17 @@ from astropy.wcs import WCS
 from matplotlib.colors import ListedColormap
 plt.style.use('dark_background')
 
+# USER INPUTS ___________________________________________________________________________________________________
+
 level2_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\1sExposures\Level2Data")
 date='October2nd'
 exposure_time='1'
 radius=2.4
 
+# _______________________________________________________________________________________________________________
+
 level2_files=sorted(level2_folder.glob("*.fits*"))
 fluctuations = np.array(np.memmap(rf"{level2_folder}\{date}_{exposure_time}_fluctuations.dat",dtype=np.float32,mode='r',shape=(2048,2048)))
-
-
-
-
-#fluctuations=np.array(np.memmap(rf"{level2_folder}\{date}_{exposure_time}_meanintensity.dat",dtype=np.float32,mode='r',shape=(2048,2048)))
-
-
-
-
 
 
 def rotate_point(origin, point, angle):
@@ -139,40 +134,21 @@ theta_midpoints=nonnegative_theta_midpoints+negative_theta_midpoints
 meanfluctuations=np.array(meanfluctuations)
 errors=np.array(errors)
 
-#idx = np.argsort(theta_reduced)
-#plt.plot(theta_reduced[idx],fluctuations_reduced[idx])
-#plt.scatter(theta_reduced,fluctuations_reduced,s=1,color='blue',alpha=0.05)
 
-#plt.style.use('dark_background')
 fig1,ax1=plt.subplots(figsize=(9,4))
 plt.subplots_adjust(bottom=0.15)
 fig2,ax2=plt.subplots(figsize=(8,7))
 
 
-#ax1.plot(theta_midpoints,meanfluctuations,color='#ff9408')
-#ax1.plot(theta_midpoints,meanfluctuations,color="#0000ff")
 ax1.plot(theta_midpoints,meanfluctuations,color="violet",linewidth=2)
-#ax1.fill_between(theta_midpoints,meanfluctuations-0.5*errors,meanfluctuations+0.5*errors,alpha=0.3,color="#ff9408")
-#ax1.fill_between(theta_midpoints,meanfluctuations-0.5*errors,meanfluctuations+0.5*errors,alpha=0.3,color="#0000ff")
 ax1.fill_between(theta_midpoints,meanfluctuations-0.5*errors,meanfluctuations+0.5*errors,alpha=0.3,color="mediumslateblue")
 ax1.set_xlabel(r'$\phi$ ($^\circ$)')
 ax1.set_ylabel(r'$\Delta$/I')
 ax1.set_title(rf'$\Delta I/I$ as a Function of $\phi$ at $r$ = {radius} Solar Radii, {str(observation_date)[:10]}')
 ax1.set_xticks([0,30,60,90,120,150,180,210,240,270,300,330,360])
-#ax1.set_facecolor(color="#010129")
 
 
 fluctuations = np.array(np.memmap(rf"{level2_folder}\{date}_{exposure_time}_fluctuations.dat",dtype=np.float32,mode='r',shape=(2048,2048)))
-
-
-
-
-
-
-#fluctuations = np.array(np.memmap(rf"{level2_folder}\{date}_{exposure_time}_meanintensity.dat",dtype=np.float32,mode='r',shape=(2048,2048)))
-
-
-
 
 fluctuations=rotate(fluctuations,angle=-rotation_angle,reshape=False,cval=np.nan,order=0)
 im=ax2.imshow(fluctuations,origin='lower',vmin=0,vmax=0.30,cmap='magma')
@@ -182,8 +158,6 @@ occulter = plt.Circle((occulter_x,occulter_y), radius=occulter_radius, fill=True
 occulter_outline = plt.Circle((occulter_x,occulter_y), radius=occulter_radius, fill=False, color='lightsteelblue', linewidth=0.5)
 measured_circle = plt.Circle((1023.5, 1023.5), radius=(radius*RSUN_ARC)/CDELT1, color='lightsteelblue',fill=False,linewidth=0.5)
 sun_circle = plt.Circle((1023.5, 1023.5), radius=(RSUN_ARC)/CDELT1, color='lightsteelblue',fill=False,linewidth=0.5,ls=(0,(5,10)))
-#ax2.add_patch(occulter)
-#ax2.add_patch(occulter_outline)
 ax2.add_patch(measured_circle)
 ax2.add_patch(sun_circle)
 
