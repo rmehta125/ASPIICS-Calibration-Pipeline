@@ -13,6 +13,9 @@ folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\MergedEx
 
 files = sorted(folder.glob("*.fits*"))
 image0=fits.getdata(files[0])
+
+#REPLACE NONPHYSICAL INTENSITY VALUES WITH NANS
+
 image0[~np.isfinite(image0)]=np.nan
 image0[image0<0]=np.nan
 
@@ -21,6 +24,8 @@ testshifts=[-3,-2,-1,0,1,2,3]
 
 for i,file in enumerate(files):
 
+    #REPLACE NONPHYSICAL INTENSITY VALUES WITH NANS
+    
     image=fits.getdata(file)
     image[~np.isfinite(image)]=np.nan
     image[image<0]=np.nan
@@ -39,6 +44,8 @@ for i,file in enumerate(files):
 
         totaldifference=0
 
+        #THESE REGIONS MAY NEED TO BE ADJUSTED IF USING EXPOSURES > 1s
+        
         region=image_shifted[520:555,870:1020]
         region0=image0[520:555,870:1020]
         difference=np.nansum(np.abs(region-region0))
