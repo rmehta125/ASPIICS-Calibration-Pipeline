@@ -11,8 +11,8 @@ from skimage.util import img_as_float
 
 #USER INPUTS _____________________________________________________________________________________________
 
-level1_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\1sExposures\Level1Data")
-level2_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\1sExposures\Level2Data")
+level1_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\1sExposures\Level1Data")           #LEVEL 3 FILE PATH CAN BE ENTERED IF CALIBRATING LEVEL 3 DATA
+level2_folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\1sExposures\Level2Data")           #LEVEL 3 FILE PATH CAN BE ENTERED IF CALIBRATING LEVEL 3 DATA
 date='October2nd'
 exposure_time='1'
 xshifts=[0, 0, -1, -1, -1, 0, 0, -1, 0, 0, -1, 0, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, 0, -1, -1, -1, -1, -1, 0, 0, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
@@ -38,7 +38,9 @@ for i, file in enumerate(level1_files):
     image_data=fits.getdata(file)
     image_data[~np.isfinite(image_data)]=np.nan
     image_data[image_data<0]=np.nan
-
+    
+    #THIS FOR LOOP SHOULD BE COMMENTED OUT IF CALIBRATING LEVEL 3 DATA
+           
     for column in badcolumns:
 
         image_data[:,column]=np.nan
@@ -56,6 +58,8 @@ for i, file in enumerate(level2_files):
     image_data=fits.getdata(file)
     image_data[~np.isfinite(image_data)]=np.nan
     image_data[image_data<0]=np.nan
+
+    #THIS FOR LOOP SHOULD BE COMMENTED OUT IF CALIBRATING LEVEL 3 DATA
 
     for column in badcolumns:
 
