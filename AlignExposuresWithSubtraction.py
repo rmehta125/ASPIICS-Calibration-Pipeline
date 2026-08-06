@@ -4,11 +4,14 @@ from astropy.io import fits
 from scipy.ndimage import shift
 from pathlib import Path
 
+#USER INPUTS ________________________________________________________________________________________
+
 shift_direction='yshift'
-
 folder = Path(r"D:\2026\FinalMaterials\ReProcessedData\WAVES\October2nd\MergedExposures\Level3Data")
-files = sorted(folder.glob("*.fits*"))
 
+# ___________________________________________________________________________________________________
+
+files = sorted(folder.glob("*.fits*"))
 image0=fits.getdata(files[0])
 image0[~np.isfinite(image0)]=np.nan
 image0[image0<0]=np.nan
